@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--        <item name="titleTextColor">@android:color/white</item>-->
+    </style>
+
+    <style name="actionbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.DayNight</item>
+    </style>
+
+    <style name="subTitleAppearance" parent="@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="MainTextAppearance" parent="@style/Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="MainTextAppearanceReverse" parent="@style/Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>

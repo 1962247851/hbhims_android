@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation.xml"
+    app:startDestination="@id/healthFragment">
+
+    <fragment
+        android:id="@+id/healthFragment"
+        android:name="com.example.hbhims.view.fragment.health.HealthFragment"
+        android:label="@string/health"
+        tools:layout="@layout/fragment_health" />
+    <fragment
+        android:id="@+id/medicalSuggestionFragment"
+        android:name="com.example.hbhims.view.fragment.medicalsuggestion.MedicalSuggestionFragment"
+        android:label="@string/medical_suggestion"
+        tools:layout="@layout/fragment_medical_suggestion" />
+    <fragment
+        android:id="@+id/myselfFragment"
+        android:name="com.example.hbhims.view.fragment.myself.MyselfFragment"
+        android:label="@string/myself"
+        tools:layout="@layout/fragment_my_self" />
+</navigation>

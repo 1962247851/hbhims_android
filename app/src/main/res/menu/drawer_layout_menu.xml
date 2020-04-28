@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/healthFragment"
+            android:title="@string/health" />
+        <item
+            android:id="@+id/medicalSuggestionFragment"
+            android:title="@string/medical_suggestion" />
+        <item
+            android:id="@+id/myselfFragment"
+            android:title="@string/myself" />
+    </group>
+</menu>

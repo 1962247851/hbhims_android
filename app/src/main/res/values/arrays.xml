@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="entries_sex">
+        <item>男</item>
+        <item>女</item>
+    </string-array>
+
+    <string-array name="entries_health">
+        <item>运动情况</item>
+        <item>睡眠质量</item>
+        <item>身高体重</item>
+        <item>血压、血糖、血氧</item>
+    </string-array>
+
+</resources>
