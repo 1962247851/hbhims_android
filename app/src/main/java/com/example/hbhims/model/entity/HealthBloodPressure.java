@@ -1,5 +1,19 @@
 package com.example.hbhims.model.entity;
 
+import androidx.annotation.NonNull;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.example.hbhims.model.common.Constant;
+import com.example.hbhims.model.common.entity.JsonResult;
+import com.example.hbhims.model.common.util.http.Http;
+import com.example.hbhims.model.common.util.http.HttpCallBack;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 血压表(HealthBloodPressure)实体类
  *
@@ -90,5 +104,80 @@ public class HealthBloodPressure {
 
     public void setMeasureDevice(String measureDevice) {
         this.measureDevice = measureDevice;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
+
+    /**
+     * 根据userId查询最新的血压
+     *
+     * @param userId   userId
+     * @param callBack 回调
+     */
+    public static void queryLatestByUserId(@NotNull Long userId, @NotNull HttpCallBack<HealthBloodPressure> callBack) {
+        HashMap<String, Object> params = new HashMap<>(2);
+        params.put("userId", userId);
+        params.put("isLatest", true);
+        Http.obtain().get(Constant.BLOOD_PRESSURE_QUERY, params, new HttpCallBack<JsonResult<JSONObject>>() {
+            @Override
+            public void onSuccess(@NotNull JsonResult<JSONObject> jsonObjectJsonResult) {
+                if (jsonObjectJsonResult.getData() != null) {
+                    callBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(HealthBloodPressure.class));
+                } else {
+                    callBack.onFailed(jsonObjectJsonResult.getErrorCode(), "数据为空");
+                }
+            }
+
+            @Override
+            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                callBack.onFailed(errorCode, error);
+            }
+        });
+    }
+
+    /**
+     * 根据userId查询所有血压
+     *
+     * @param userId   userId
+     * @param callBack 回调
+     */
+    public static void queryAllByUserId(@NotNull Long userId, @NotNull HttpCallBack<List<HealthBloodPressure>> callBack) {
+        HashMap<String, Object> params = new HashMap<>(1);
+        params.put("userId", userId);
+        Http.obtain().get(Constant.BLOOD_PRESSURE_QUERY, params, new HttpCallBack<JsonResult<JSONArray>>() {
+            @Override
+            public void onSuccess(@NotNull JsonResult<JSONArray> jsonArrayJsonResult) {
+                callBack.onSuccess(jsonArrayJsonResult.getData().toJavaList(HealthBloodPressure.class));
+            }
+
+            @Override
+            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                callBack.onFailed(errorCode, error);
+            }
+        });
+    }
+
+    /**
+     * 记录血压
+     *
+     * @param healthBloodPressure 血压实体类
+     * @param callBack            回调
+     */
+    public static void insert(@NotNull HealthBloodPressure healthBloodPressure, @NotNull HttpCallBack<HealthBloodPressure> callBack) {
+        Http.obtain().put(Constant.BLOOD_PRESSURE_INSERT, healthBloodPressure.toString(), new HttpCallBack<JsonResult<JSONObject>>() {
+            @Override
+            public void onSuccess(@NotNull JsonResult<JSONObject> stringJsonResult) {
+                callBack.onSuccess(stringJsonResult.getData().toJavaObject(HealthBloodPressure.class));
+            }
+
+            @Override
+            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                callBack.onFailed(errorCode, error);
+            }
+        });
     }
 }

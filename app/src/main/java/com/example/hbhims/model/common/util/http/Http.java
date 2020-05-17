@@ -6,6 +6,7 @@ import com.youth.xframe.utils.handler.XHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -70,5 +71,10 @@ public class Http implements IHttpEngine {
     @Override
     public void delete(@NotNull String url, @Nullable Map<String, Object> params, @NotNull HttpCallBack callBack) {
         httpEngine.delete(url, params, callBack);
+    }
+
+    @Override
+    public void uploadFile(@NotNull String url, @NotNull String fileName, @NotNull String path, @NotNull File file, @NotNull HttpCallBack callBack) {
+        httpEngine.uploadFile(url, fileName, path, file, callBack);
     }
 }

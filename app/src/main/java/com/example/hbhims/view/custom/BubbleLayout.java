@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.FrameLayout;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 
@@ -26,6 +27,12 @@ public class BubbleLayout extends FrameLayout {
     @IntDef({LEFT, TOP, RIGHT, BOTTOM})
     private @interface Direction {
     }
+
+    /**
+     * 背景颜色
+     */
+    @ColorInt
+    private int mBackGroundColor;
 
     /**
      * 圆角大小
@@ -62,7 +69,7 @@ public class BubbleLayout extends FrameLayout {
     private void init(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.BubbleLayout);
         //背景颜色
-        int backGroundColor = ta.getColor(R.styleable.BubbleLayout_background_color, Color.WHITE);
+        mBackGroundColor = ta.getColor(R.styleable.BubbleLayout_background_color, Color.WHITE);
         //阴影颜色
         int shadowColor = ta.getColor(R.styleable.BubbleLayout_shadow_color,
                 Color.parseColor("#999999"));
@@ -78,7 +85,6 @@ public class BubbleLayout extends FrameLayout {
 
         mBorderPaint = new Paint();
         mBorderPaint.setAntiAlias(true);
-        mBorderPaint.setColor(backGroundColor);
         mBorderPaint.setShadowLayer(shadowSize, 0, 0, shadowColor);
 
         mPath = new Path();
@@ -93,6 +99,7 @@ public class BubbleLayout extends FrameLayout {
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        mBorderPaint.setColor(mBackGroundColor);
         if (mDatumPoint.x > 0 && mDatumPoint.y > 0)
             switch (mDirection) {
                 case LEFT:
@@ -115,7 +122,6 @@ public class BubbleLayout extends FrameLayout {
         if (triangularLength == 0) {
             return;
         }
-
         mPath.addRoundRect(mRect, mRadius, mRadius, Path.Direction.CCW);
         mPath.moveTo(mDatumPoint.x, mDatumPoint.y - triangularLength / 2);
         mPath.lineTo(mDatumPoint.x - triangularLength / 2, mDatumPoint.y);
@@ -199,6 +205,7 @@ public class BubbleLayout extends FrameLayout {
         }
     }
 
+
     /**
      * 设置三角形偏移位置
      *
@@ -207,6 +214,15 @@ public class BubbleLayout extends FrameLayout {
     public void setTriangleOffset(int offset) {
         this.mOffset = offset;
         applyOffset();
+        invalidate();
+    }
+
+    public int getmBackGroundColor() {
+        return mBackGroundColor;
+    }
+
+    public void setmBackGroundColor(int mBackGroundColor) {
+        this.mBackGroundColor = mBackGroundColor;
         invalidate();
     }
 

@@ -6,11 +6,9 @@
         <item>女</item>
     </string-array>
 
-    <string-array name="entries_health">
-        <item>运动情况</item>
-        <item>睡眠质量</item>
-        <item>身高体重</item>
-        <item>血压、血糖、血氧</item>
+    <string-array name="entries_medical_suggestion">
+        <item>我收到的</item>
+        <item>我发出的</item>
     </string-array>
 
 </resources>

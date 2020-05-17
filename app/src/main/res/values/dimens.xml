@@ -7,8 +7,9 @@
 
     <dimen name="card_view_horizontal_margin">10dp</dimen>
     <dimen name="card_view_vertical_margin">8dp</dimen>
+    <dimen name="card_view_vertical_margin_half">4dp</dimen>
 
     <dimen name="card_view_padding">5dp</dimen>
-    <dimen name="fab_margin">10dp</dimen>
+    <dimen name="card_view_corner">10dp</dimen>
 
 </resources>

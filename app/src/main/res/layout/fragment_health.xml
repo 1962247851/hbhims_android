@@ -1,27 +1,695 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/smart_refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.fragment.health.HealthFragment">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <com.scwang.smartrefresh.layout.header.ClassicsHeader
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable" />
+            android:orientation="vertical">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/material_card_view_need_medical_suggestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                android:layout_marginTop="@dimen/card_view_vertical_margin"
+                android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                android:layout_marginBottom="@dimen/card_view_vertical_margin"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:padding="10dp">
 
-</LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="需要医疗意见和建议？"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/image_view_close"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:background="?selectableItemBackground"
+                        android:src="@android:drawable/ic_menu_close_clear_cancel"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/WindowBackgroundColor"
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/material_card_view_sport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    app:cardCornerRadius="@dimen/card_view_corner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:padding="@dimen/card_view_padding">
+
+                        <TextView
+                            android:id="@+id/text_view1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/step_value"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_view_1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:src="@drawable/step"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view1"
+                            tools:ignore="ContentDescription" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/text_view_step_value_today"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:text="@string/zero"
+                            android:textSize="30sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/image_view_1"
+                            app:layout_constraintTop_toBottomOf="@id/text_view1"
+                            app:ticker_defaultCharacterList="number" />
+
+                        <TextView
+                            android:id="@+id/text_view_sport_divider"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_step_value_today"
+                            app:layout_constraintStart_toEndOf="@id/text_view_step_value_today" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/text_view_step_value_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/zero"
+                            app:layout_constraintBottom_toBottomOf="@+id/text_view_sport_divider"
+                            app:layout_constraintStart_toEndOf="@id/text_view_sport_divider"
+                            app:ticker_defaultCharacterList="number" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/step"
+                            android:textAppearance="@style/MainTextAppearance"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_step_value_total"
+                            app:layout_constraintStart_toEndOf="@id/text_view_step_value_total" />
+
+                        <com.example.hbhims.view.custom.CompletedView
+                            android:id="@+id/completed_view_sport"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginEnd="@dimen/card_view_padding"
+                            app:circleColor="@color/WindowBackgroundColor"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view1"
+                            app:radius="20dp"
+                            app:ringBgColor="@android:color/darker_gray"
+                            app:ringColor="@color/colorPrimary"
+                            app:strokeWidth="2dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:layout_constraintBottom_toBottomOf="@id/completed_view_sport"
+                            app:layout_constraintEnd_toEndOf="@id/completed_view_sport"
+                            app:layout_constraintStart_toStartOf="@id/completed_view_sport"
+                            app:layout_constraintTop_toTopOf="@id/completed_view_sport">
+
+                            <com.robinhood.ticker.TickerView
+                                android:id="@+id/text_view_step_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/zero"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="12sp"
+                                app:ticker_defaultCharacterList="number" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/percent"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/material_card_view_sleep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    app:cardCornerRadius="@dimen/card_view_corner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:padding="@dimen/card_view_padding">
+
+                        <TextView
+                            android:id="@+id/text_view2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sleep"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_view_2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:padding="5dp"
+                            android:src="@drawable/sleep"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view2"
+                            tools:ignore="ContentDescription" />
+
+                        <LinearLayout
+                            android:id="@+id/linear_layout2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:layout_weight="1"
+                            android:gravity="bottom"
+                            app:layout_constraintStart_toEndOf="@id/image_view_2"
+                            app:layout_constraintTop_toBottomOf="@id/text_view2">
+
+                            <TextView
+                                android:id="@+id/text_view_sleep_total_time_hour"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no_data_english"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/hour"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/text_view_sleep_total_time_minute"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no_data_english"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/minute"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/text_view_sleep_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/card_view_padding"
+                            android:background="@drawable/background_status"
+                            android:elevation="4dp"
+                            android:gravity="center"
+                            android:text="@string/no_data_chinese"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view2" />
+
+                        <TextView
+                            android:id="@+id/text_view_sleep_during_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintStart_toStartOf="@id/linear_layout2"
+                            app:layout_constraintTop_toBottomOf="@id/linear_layout2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/material_card_view_bmi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    app:cardCornerRadius="@dimen/card_view_corner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:padding="@dimen/card_view_padding">
+
+                        <TextView
+                            android:id="@+id/text_view3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weight"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_view_3"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:src="@drawable/bmi"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view3"
+                            tools:ignore="ContentDescription" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/text_view_bmi_weight_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:text="@string/zero"
+                            android:textAppearance="@style/MainTextAppearance"
+                            android:textSize="30sp"
+                            app:layout_constraintStart_toEndOf="@id/image_view_3"
+                            app:layout_constraintTop_toBottomOf="@id/text_view3"
+                            app:ticker_defaultCharacterList="number"
+                            tools:text="65.0" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/kg"
+                            android:textAppearance="@style/MainTextAppearance"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_bmi_weight_value"
+                            app:layout_constraintStart_toEndOf="@id/text_view_bmi_weight_value" />
+
+                        <TextView
+                            android:id="@+id/text_view_bmi_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/card_view_padding"
+                            android:background="@drawable/background_status"
+                            android:elevation="4dp"
+                            android:gravity="center"
+                            android:text="@string/no_data_chinese"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view3" />
+
+                        <TextView
+                            android:id="@+id/text_view_bmi_weight_update_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintStart_toStartOf="@id/text_view_bmi_weight_value"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_bmi_weight_value"
+                            tools:text="10分钟前" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/material_card_view_blood_pressure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    app:cardCornerRadius="@dimen/card_view_corner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:padding="@dimen/card_view_padding">
+
+                        <TextView
+                            android:id="@+id/text_view4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/blood_pressure"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_view_4"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:padding="5dp"
+                            android:src="@drawable/blood_pressure"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view4"
+                            tools:ignore="ContentDescription" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/text_view_blood_pressure_high"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:text="@string/zero"
+                            android:textSize="30sp"
+                            app:layout_constraintStart_toEndOf="@id/image_view_4"
+                            app:layout_constraintTop_toBottomOf="@id/text_view4"
+                            app:ticker_defaultCharacterList="number" />
+
+                        <TextView
+                            android:id="@+id/text_view_blood_pressure_divider"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_blood_pressure_high"
+                            app:layout_constraintStart_toEndOf="@id/text_view_blood_pressure_high"
+                            app:layout_constraintTop_toTopOf="@id/text_view_blood_pressure_high" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/text_view_blood_pressure_low"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:text="@string/zero"
+                            android:textSize="30sp"
+                            app:layout_constraintStart_toEndOf="@id/text_view_blood_pressure_divider"
+                            app:layout_constraintTop_toBottomOf="@id/text_view4"
+                            app:ticker_defaultCharacterList="number" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/mmhg"
+                            android:textAppearance="@style/MainTextAppearance"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_blood_pressure_high"
+                            app:layout_constraintStart_toEndOf="@id/text_view_blood_pressure_low" />
+
+                        <TextView
+                            android:id="@+id/text_view_blood_pressure_update_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintStart_toStartOf="@id/text_view_blood_pressure_high"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_blood_pressure_high"
+                            tools:text="今天07:53" />
+
+                        <TextView
+                            android:id="@+id/text_view_blood_pressure_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/card_view_padding"
+                            android:background="@drawable/background_status"
+                            android:elevation="4dp"
+                            android:gravity="center"
+                            android:text="@string/no_data_chinese"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view4" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/material_card_view_blood_sugar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginTop="@dimen/card_view_vertical_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    android:layout_marginBottom="@dimen/card_view_vertical_margin"
+                    app:cardCornerRadius="@dimen/card_view_corner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:padding="@dimen/card_view_padding">
+
+                        <TextView
+                            android:id="@+id/text_view5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/blood_sugar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/image_view_5"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:padding="5dp"
+                            android:src="@drawable/blood_sugar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view5"
+                            tools:ignore="ContentDescription" />
+
+                        <com.robinhood.ticker.TickerView
+                            android:id="@+id/text_view_blood_sugar_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:text="@string/zero"
+                            android:textAppearance="@style/MainTextAppearance"
+                            android:textSize="30sp"
+                            app:layout_constraintStart_toEndOf="@id/image_view_5"
+                            app:layout_constraintTop_toBottomOf="@id/text_view5"
+                            app:ticker_defaultCharacterList="number"
+                            tools:text="3.9" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mmol_per_L"
+                            android:textAppearance="@style/MainTextAppearance"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@id/text_view_blood_sugar_value"
+                            app:layout_constraintStart_toEndOf="@id/text_view_blood_sugar_value" />
+
+                        <TextView
+                            android:id="@+id/text_view_blood_sugar_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/card_view_padding"
+                            android:background="@drawable/background_status"
+                            android:elevation="4dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="@string/no_data_chinese"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view5" />
+
+                        <TextView
+                            android:id="@+id/text_view_blood_sugar_update_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintStart_toStartOf="@id/text_view_blood_sugar_value"
+                            app:layout_constraintTop_toBottomOf="@id/text_view_blood_sugar_value"
+                            tools:text="10分钟前" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/material_card_view_blood_oxygen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_view_horizontal_margin"
+                    android:layout_marginEnd="@dimen/card_view_horizontal_margin"
+                    android:layout_marginBottom="@dimen/card_view_vertical_margin"
+                    app:cardCornerRadius="@dimen/card_view_corner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:padding="@dimen/card_view_padding">
+
+                        <ImageView
+                            android:id="@+id/image_view_6"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            android:padding="5dp"
+                            android:src="@drawable/blood_oxygen"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view6"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/text_view6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/blood_oxygen"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.example.hbhims.view.custom.CompletedView
+                            android:id="@+id/completed_view_blood_oxygen"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="@dimen/card_view_padding"
+                            app:circleColor="@color/WindowBackgroundColor"
+                            app:layout_constraintStart_toEndOf="@id/image_view_6"
+                            app:layout_constraintTop_toBottomOf="@id/text_view6"
+                            app:radius="20dp"
+                            app:ringBgColor="@android:color/darker_gray"
+                            app:ringColor="@color/colorPrimary"
+                            app:strokeWidth="2dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            app:layout_constraintBottom_toBottomOf="@id/completed_view_blood_oxygen"
+                            app:layout_constraintEnd_toEndOf="@id/completed_view_blood_oxygen"
+                            app:layout_constraintStart_toStartOf="@id/completed_view_blood_oxygen"
+                            app:layout_constraintTop_toTopOf="@id/completed_view_blood_oxygen">
+
+                            <com.robinhood.ticker.TickerView
+                                android:id="@+id/text_view_blood_oxygen_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/zero"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="12sp"
+                                app:ticker_defaultCharacterList="number"
+                                tools:text="85.0" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/percent"
+                                android:textAppearance="@style/MainTextAppearance"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/text_view_blood_oxygen_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/card_view_padding"
+                            android:background="@drawable/background_status"
+                            android:elevation="4dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="@string/no_data_chinese"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/text_view6" />
+
+                        <TextView
+                            android:id="@+id/text_view_blood_oxygen_update_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintStart_toStartOf="@id/completed_view_blood_oxygen"
+                            app:layout_constraintTop_toBottomOf="@id/completed_view_blood_oxygen"
+                            tools:text="10分钟前" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

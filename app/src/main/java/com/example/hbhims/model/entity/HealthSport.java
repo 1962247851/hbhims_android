@@ -8,9 +8,10 @@ import com.example.hbhims.model.common.Constant;
 import com.example.hbhims.model.common.entity.JsonResult;
 import com.example.hbhims.model.common.util.http.Http;
 import com.example.hbhims.model.common.util.http.HttpCallBack;
+import com.example.hbhims.model.common.util.http.RequestCallBack;
+import com.youth.xframe.utils.XNetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -108,64 +109,78 @@ public class HealthSport {
         this.calorie = calorie;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
+
     /**
      * 查询用户Id的所有运动记录
      *
-     * @param userId   userId
-     * @param callBack 回调
+     * @param userId          userId
+     * @param requestCallBack 回调
      */
-    public static void queryAllByUserId(@NotNull Long userId, @NotNull HttpCallBack<List<HealthSport>> callBack) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
-        Http.obtain().get(Constant.SPORT_QUERY, params, new HttpCallBack<JsonResult<JSONArray>>() {
-            @Override
-            public void onSuccess(@NotNull JsonResult<JSONArray> stringJsonResult) {
-                callBack.onSuccess(stringJsonResult.getData().toJavaList(HealthSport.class));
-            }
+    public static void queryAllByUserId(@NotNull Long userId, @NotNull RequestCallBack<List<HealthSport>> requestCallBack) {
+        if (XNetworkUtils.isAvailable()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("userId", userId);
+            Http.obtain().get(Constant.SPORT_QUERY, params, new HttpCallBack<JsonResult<JSONArray>>() {
+                @Override
+                public void onSuccess(@NotNull JsonResult<JSONArray> stringJsonResult) {
+                    requestCallBack.onSuccess(stringJsonResult.getData().toJavaList(HealthSport.class));
+                }
 
-            @Override
-            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
-                callBack.onFailed(errorCode, error);
-            }
-        });
+                @Override
+                public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                    requestCallBack.onFailed(errorCode, error);
+                }
+            });
+        } else {
+            requestCallBack.onNoNetWork();
+        }
     }
 
     /**
-         * 查询用户Id的所有今日运动记录或者指定时间段内的运动记录
+     * 查询用户Id的今日运动记录或者指定时间的运动记录
      *
-     * @param userId   userId
-     * @param callBack 回调
+     * @param userId          userId
+     * @param date            日期
+     * @param requestCallBack 回调
      */
-    public static void queryAllByUserIdBetween(@NotNull Long userId, @Nullable Long start, @Nullable Long end, @NotNull HttpCallBack<List<HealthSport>> callBack) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
-        if (start != null) {
-            params.put("start", start);
-        }
-        if (end != null) {
-            params.put("end", end);
-        }
-        Http.obtain().get(Constant.SPORT_QUERY_BETWEEN, params, new HttpCallBack<JsonResult<JSONArray>>() {
-            @Override
-            public void onSuccess(@NotNull JsonResult<JSONArray> stringJsonResult) {
-                callBack.onSuccess(stringJsonResult.getData().toJavaList(HealthSport.class));
-            }
+    public static void queryAllByUserIdAndDate(@NotNull Long userId, @NotNull Long date, @NotNull RequestCallBack<HealthSport> requestCallBack) {
+        if (XNetworkUtils.isAvailable()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("userId", userId);
+            params.put("date", date);
+            Http.obtain().get(Constant.SPORT_QUERY_BY_DATE, params, new HttpCallBack<JsonResult<JSONObject>>() {
+                @Override
+                public void onSuccess(@NotNull JsonResult<JSONObject> jsonObjectJsonResult) {
+                    if (jsonObjectJsonResult.getData() != null) {
+                        requestCallBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(HealthSport.class));
+                    } else {
+                        requestCallBack.onFailed(jsonObjectJsonResult.getErrorCode(), "数据为空");
+                    }
+                }
 
-            @Override
-            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
-                callBack.onFailed(errorCode, error);
-            }
-        });
+                @Override
+                public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                    requestCallBack.onFailed(errorCode, error);
+                }
+            });
+        } else {
+            requestCallBack.onNoNetWork();
+        }
     }
 
     /**
-     * 新增一条运动记录
+     * 新增或更新一条运动记录
      *
      * @param healthSport 运动记录
      * @param callBack    回调
      */
-    public static void insert(@NotNull HealthSport healthSport, @NotNull HttpCallBack<HealthSport> callBack) {
-        Http.obtain().put(Constant.SPORT_INSERT, healthSport.toString(), new HttpCallBack<JsonResult<JSONObject>>() {
+    public static void insertOrReplace(@NotNull HealthSport healthSport, @NotNull HttpCallBack<HealthSport> callBack) {
+        Http.obtain().put(Constant.SPORT_INSERT_OR_REPLACE, healthSport.toString(), new HttpCallBack<JsonResult<JSONObject>>() {
             @Override
             public void onSuccess(@NotNull JsonResult<JSONObject> stringJsonResult) {
                 callBack.onSuccess(stringJsonResult.getData().toJavaObject(HealthSport.class));
@@ -178,9 +193,25 @@ public class HealthSport {
         });
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return JSONObject.toJSONString(this);
+    public static void queryAll(@NotNull RequestCallBack<List<HealthSport>> requestCallBack) {
+        if (XNetworkUtils.isAvailable()) {
+            Http.obtain().get(Constant.SPORT_QUERY, null, new HttpCallBack<JsonResult<JSONArray>>() {
+                @Override
+                public void onSuccess(@NotNull JsonResult<JSONArray> jsonObjectJsonResult) {
+                    if (jsonObjectJsonResult.getData() != null) {
+                        requestCallBack.onSuccess(jsonObjectJsonResult.getData().toJavaList(HealthSport.class));
+                    } else {
+                        requestCallBack.onFailed(jsonObjectJsonResult.getErrorCode(), "数据为空");
+                    }
+                }
+
+                @Override
+                public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                    requestCallBack.onFailed(errorCode, error);
+                }
+            });
+        } else {
+            requestCallBack.onNoNetWork();
+        }
     }
 }

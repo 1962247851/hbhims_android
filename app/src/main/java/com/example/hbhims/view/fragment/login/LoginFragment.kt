@@ -49,7 +49,7 @@ class LoginFragment : AbstractFragment() {
 
     override fun initView() {
         tiet_username.setText(username)
-        tied_password.setText(password)
+        tiet_password.setText(password)
         getCaptchaImage()
         button_login.setOnClickListener {
             if (uuid != null) {
@@ -57,8 +57,8 @@ class LoginFragment : AbstractFragment() {
                     .show()
                 val hashMap = HashMap<String, Any>(3)
                 hashMap["username"] = tiet_username.text.toString()
-                hashMap["password"] = tied_password.text.toString()
-                hashMap["code"] = tied_code.text.toString()
+                hashMap["password"] = tiet_password.text.toString()
+                hashMap["code"] = tiet_code.text.toString()
                 hashMap["uuid"] = uuid!!
                 Http.obtain().post(Constant.USER_LOGIN, hashMap, object :
                     HttpCallBack<JsonResult<JSONObject>>() {
@@ -66,7 +66,7 @@ class LoginFragment : AbstractFragment() {
                     override fun onSuccess(result: JsonResult<JSONObject>) {
                         val sysUser =
                             JSONObject.parseObject(result.data.toString(), SysUser::class.java)
-                        sysUser.password = tied_password.text.toString()
+                        sysUser.password = tiet_password.text.toString()
                         LoadingDialog.with(requireContext()).cancel()
                         if (switch_remember_account.isChecked) {
                             XPreferencesUtils.put(
@@ -82,7 +82,7 @@ class LoginFragment : AbstractFragment() {
                     override fun onFailed(errorCode: Int, error: String) {
                         LoadingDialog.with(requireContext()).cancel()
                         getCaptchaImage()
-                        XToast.error(error)
+                        XToast.error("$errorCode\n$error")
                     }
 
                 })
@@ -99,39 +99,39 @@ class LoginFragment : AbstractFragment() {
                 val data = result.data
                 val decode = Base64.decode(data.getString("img"), Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(decode, 0, decode.size)
-                image_view_code.setImageBitmap(bitmap)
+                image_view_code?.setImageBitmap(bitmap)
                 uuid = data.getString("uuid")
-                image_view_code.setOnClickListener {
+                image_view_code?.setOnClickListener {
                     getCaptchaImage()
                 }
             }
 
             override fun onFailed(errorCode: Int, error: String) {
                 failedGetCaptchaImage()
-                XToast.error(error)
+                XToast.error("$errorCode\n$error")
             }
 
         })
     }
 
     private fun stopGetCaptchaImage() {
-        tied_code.text = null
-        progress_bar.visibility = View.GONE
-        image_view_code.visibility = View.VISIBLE
+        tiet_code?.text = null
+        progress_bar?.visibility = View.GONE
+        image_view_code?.visibility = View.VISIBLE
     }
 
     private fun failedGetCaptchaImage() {
-        progress_bar.visibility = View.GONE
-        image_view_code.visibility = View.VISIBLE
-        image_view_code.setImageResource(R.drawable.xloading_error)
-        image_view_code.setOnClickListener {
+        progress_bar?.visibility = View.GONE
+        image_view_code?.visibility = View.VISIBLE
+        image_view_code?.setImageResource(R.drawable.xloading_error)
+        image_view_code?.setOnClickListener {
             getCaptchaImage()
         }
     }
 
     private fun startGetCaptchaImage() {
-        progress_bar.visibility = View.VISIBLE
-        image_view_code.visibility = View.INVISIBLE
+        progress_bar?.visibility = View.VISIBLE
+        image_view_code?.visibility = View.INVISIBLE
     }
 
     companion object {
@@ -147,7 +147,6 @@ class LoginFragment : AbstractFragment() {
          * @param password Parameter 2.
          * @return A new instance of fragment LoginFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(username: String, password: String) =
             LoginFragment().apply {

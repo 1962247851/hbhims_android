@@ -5,6 +5,11 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="WindowBackgroundColor">#FAFAFA</color>
     <color name="MainTextColor">@android:color/black</color>
+    <color name="weight_thin">#AAD151</color>
+    <color name="weight_normal">#71E54C</color>
+    <color name="weight_fatter">#FBC33C</color>
+    <color name="weight_over_weight">#F83C3B</color>
+
 
     <color name="ChartColor1">@color/colorPrimary</color>
     <color name="ChartColor2">#50AA20</color>

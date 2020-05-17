@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'org.greenrobot.greendao'
+//apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -36,11 +36,11 @@ android {
         }
     }
 
-    greendao {
-        schemaVersion 1
-        daoPackage 'com.example.hbhims.model.greendao'
-        targetGenDir 'src/main/java'
-    }
+//    greendao {
+//        schemaVersion 1
+//        daoPackage 'com.example.hbhims.model.greendao'
+//        targetGenDir 'src/main/java'
+//    }
 
 }
 
@@ -59,7 +59,7 @@ dependencies {
     //用于和TabLayout绑定
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'com.robinhood.ticker:ticker:2.0.2'
-    implementation 'org.greenrobot:greendao:3.2.2'
+//    implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.lcodecorex:extextview:1.0.2'
     implementation 'com.youth.xframe:xframe:1.1.2'
     implementation 'org.greenrobot:eventbus:3.1.1'

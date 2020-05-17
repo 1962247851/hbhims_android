@@ -1,5 +1,19 @@
 package com.example.hbhims.model.entity;
 
+import androidx.annotation.NonNull;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.example.hbhims.model.common.Constant;
+import com.example.hbhims.model.common.entity.JsonResult;
+import com.example.hbhims.model.common.util.http.Http;
+import com.example.hbhims.model.common.util.http.HttpCallBack;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * 血氧表(HealthBloodOxygen)实体类
  *
@@ -77,5 +91,80 @@ public class HealthBloodOxygen {
 
     public void setMeasureDevice(String measureDevice) {
         this.measureDevice = measureDevice;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
+
+    /**
+     * 根据userId查询最新的血氧
+     *
+     * @param userId   userId
+     * @param callBack 回调
+     */
+    public static void queryLatestByUserId(@NotNull Long userId, @NotNull HttpCallBack<HealthBloodOxygen> callBack) {
+        HashMap<String, Object> params = new HashMap<>(2);
+        params.put("userId", userId);
+        params.put("isLatest", true);
+        Http.obtain().get(Constant.BLOOD_OXYGEN_QUERY, params, new HttpCallBack<JsonResult<JSONObject>>() {
+            @Override
+            public void onSuccess(@NotNull JsonResult<JSONObject> jsonObjectJsonResult) {
+                if (jsonObjectJsonResult.getData() != null) {
+                    callBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(HealthBloodOxygen.class));
+                } else {
+                    callBack.onFailed(jsonObjectJsonResult.getErrorCode(), "数据为空");
+                }
+            }
+
+            @Override
+            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                callBack.onFailed(errorCode, error);
+            }
+        });
+    }
+
+    /**
+     * 根据userId查询所有血氧
+     *
+     * @param userId   userId
+     * @param callBack 回调
+     */
+    public static void queryAllByUserId(@NotNull Long userId, @NotNull HttpCallBack<List<HealthBloodOxygen>> callBack) {
+        HashMap<String, Object> params = new HashMap<>(1);
+        params.put("userId", userId);
+        Http.obtain().get(Constant.BLOOD_OXYGEN_QUERY, params, new HttpCallBack<JsonResult<JSONArray>>() {
+            @Override
+            public void onSuccess(@NotNull JsonResult<JSONArray> jsonArrayJsonResult) {
+                callBack.onSuccess(jsonArrayJsonResult.getData().toJavaList(HealthBloodOxygen.class));
+            }
+
+            @Override
+            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                callBack.onFailed(errorCode, error);
+            }
+        });
+    }
+
+    /**
+     * 记录血氧
+     *
+     * @param healthBloodOxygen 血氧实体类
+     * @param callBack          回调
+     */
+    public static void insert(@NotNull HealthBloodOxygen healthBloodOxygen, @NotNull HttpCallBack<HealthBloodOxygen> callBack) {
+        Http.obtain().put(Constant.BLOOD_OXYGEN_INSERT, healthBloodOxygen.toString(), new HttpCallBack<JsonResult<JSONObject>>() {
+            @Override
+            public void onSuccess(@NotNull JsonResult<JSONObject> stringJsonResult) {
+                callBack.onSuccess(stringJsonResult.getData().toJavaObject(HealthBloodOxygen.class));
+            }
+
+            @Override
+            public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                callBack.onFailed(errorCode, error);
+            }
+        });
     }
 }

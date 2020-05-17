@@ -8,6 +8,8 @@ import com.example.hbhims.model.common.Constant;
 import com.example.hbhims.model.common.entity.JsonResult;
 import com.example.hbhims.model.common.util.http.Http;
 import com.example.hbhims.model.common.util.http.HttpCallBack;
+import com.example.hbhims.model.common.util.http.RequestCallBack;
+import com.youth.xframe.utils.XNetworkUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -166,7 +168,11 @@ public class HealthSleep {
         Http.obtain().get(Constant.SLEEP_QUERY_BY_DATE, params, new HttpCallBack<JsonResult<JSONObject>>() {
             @Override
             public void onSuccess(@NotNull JsonResult<JSONObject> jsonObjectJsonResult) {
-                callBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(HealthSleep.class));
+                if (jsonObjectJsonResult.getData() != null) {
+                    callBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(HealthSleep.class));
+                } else {
+                    callBack.onFailed(jsonObjectJsonResult.getErrorCode(), "数据为空");
+                }
             }
 
             @Override
@@ -196,4 +202,25 @@ public class HealthSleep {
         });
     }
 
+    public static void queryAll(@NotNull RequestCallBack<List<HealthSleep>> requestCallBack) {
+        if (XNetworkUtils.isAvailable()) {
+            Http.obtain().get(Constant.SLEEP_QUERY, null, new HttpCallBack<JsonResult<JSONArray>>() {
+                @Override
+                public void onSuccess(@NotNull JsonResult<JSONArray> jsonObjectJsonResult) {
+                    if (jsonObjectJsonResult.getData() != null) {
+                        requestCallBack.onSuccess(jsonObjectJsonResult.getData().toJavaList(HealthSleep.class));
+                    } else {
+                        requestCallBack.onFailed(jsonObjectJsonResult.getErrorCode(), "数据为空");
+                    }
+                }
+
+                @Override
+                public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                    requestCallBack.onFailed(errorCode, error);
+                }
+            });
+        } else {
+            requestCallBack.onNoNetWork();
+        }
+    }
 }

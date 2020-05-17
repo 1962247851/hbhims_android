@@ -8,8 +8,10 @@ import com.youth.xframe.XFrame
 import com.youth.xframe.utils.log.XLog
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.EMPTY_REQUEST
+import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -23,47 +25,15 @@ class OkHttpEngine : IHttpEngine {
         params: Map<String, Any>?,
         callBack: HttpCallBack<Any>
     ) {
-        val request =
-            Request.Builder().url(url + getUrlParamsByMap(params)).build()
+        val request = Request.Builder().url(url + getUrlParamsByMap(params)).build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Http.handler.post {
-                    XLog.e(e.toString())
-                    callBack.onFailed(999, e.message ?: "失败")
-                }
+                failureToUser(e, callBack)
             }
 
             @Throws(IOException::class)
-            override fun onResponse(
-                call: Call,
-                response: Response
-            ) {
-                val body = response.body
-                if (response.isSuccessful && body != null) {
-                    val result = body.string()
-                    XLog.json(result)
-                    Http.handler.post {
-                        try {
-                            val jsonResult = JsonResult.newInstance(result)
-                            if (jsonResult.success) {
-                                callBack.onSuccess(jsonResult)
-                            } else {
-                                callBack.onFailed(
-                                    jsonResult.errorCode,
-                                    jsonResult.errorMsg
-                                )
-                            }
-                        } catch (e: Exception) {
-                            XLog.e(e.message)
-                            callBack.onFailed(999, e.message ?: "失败")
-                        }
-                    }
-                } else {
-                    Http.handler.post {
-                        XLog.e(response.message)
-                        callBack.onFailed(response.code, response.message)
-                    }
-                }
+            override fun onResponse(call: Call, response: Response) {
+                responseToUser(response, callBack)
             }
         })
     }
@@ -90,43 +60,12 @@ class OkHttpEngine : IHttpEngine {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Http.handler.post {
-                    XLog.e(e.toString())
-                    callBack.onFailed(999, e.message ?: "失败")
-                }
+                failureToUser(e, callBack)
             }
 
             @Throws(IOException::class)
-            override fun onResponse(
-                call: Call,
-                response: Response
-            ) {
-                val responseBody = response.body
-                if (response.isSuccessful && responseBody != null) {
-                    val result = responseBody.string()
-                    XLog.json(result)
-                    Http.handler.post {
-                        try {
-                            val jsonResult = JsonResult.newInstance(result)
-                            if (jsonResult.success) {
-                                callBack.onSuccess(jsonResult)
-                            } else {
-                                callBack.onFailed(
-                                    jsonResult.errorCode,
-                                    jsonResult.errorMsg
-                                )
-                            }
-                        } catch (e: Exception) {
-                            XLog.e(e.message)
-                            callBack.onFailed(999, e.message ?: "失败")
-                        }
-                    }
-                } else {
-                    Http.handler.post {
-                        XLog.e(responseBody?.string())
-                        callBack.onFailed(response.code, responseBody?.string() ?: "失败")
-                    }
-                }
+            override fun onResponse(call: Call, response: Response) {
+                responseToUser(response, callBack)
             }
         })
     }
@@ -139,43 +78,12 @@ class OkHttpEngine : IHttpEngine {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Http.handler.post {
-                    XLog.e(e.toString())
-                    callBack.onFailed(999, e.message ?: "失败")
-                }
+                failureToUser(e, callBack)
             }
 
             @Throws(IOException::class)
-            override fun onResponse(
-                call: Call,
-                response: Response
-            ) {
-                val responseBody = response.body
-                if (response.isSuccessful && responseBody != null) {
-                    val result = responseBody.string()
-                    XLog.json(result)
-                    Http.handler.post {
-                        try {
-                            val jsonResult = JsonResult.newInstance(result)
-                            if (jsonResult.success) {
-                                callBack.onSuccess(jsonResult)
-                            } else {
-                                callBack.onFailed(
-                                    jsonResult.errorCode,
-                                    jsonResult.errorMsg
-                                )
-                            }
-                        } catch (e: Exception) {
-                            XLog.e(e.message)
-                            callBack.onFailed(999, e.message ?: "失败")
-                        }
-                    }
-                } else {
-                    Http.handler.post {
-                        XLog.e(responseBody?.string())
-                        callBack.onFailed(response.code, responseBody?.string() ?: "失败")
-                    }
-                }
+            override fun onResponse(call: Call, response: Response) {
+                responseToUser(response, callBack)
             }
         })
     }
@@ -202,43 +110,12 @@ class OkHttpEngine : IHttpEngine {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Http.handler.post {
-                    XLog.e(e.toString())
-                    callBack.onFailed(999, e.message ?: "失败")
-                }
+                failureToUser(e, callBack)
             }
 
             @Throws(IOException::class)
-            override fun onResponse(
-                call: Call,
-                response: Response
-            ) {
-                val responseBody = response.body
-                if (response.isSuccessful && responseBody != null) {
-                    val result = responseBody.string()
-                    XLog.json(result)
-                    Http.handler.post {
-                        try {
-                            val jsonResult = JsonResult.newInstance(result)
-                            if (jsonResult.success) {
-                                callBack.onSuccess(jsonResult)
-                            } else {
-                                callBack.onFailed(
-                                    jsonResult.errorCode,
-                                    jsonResult.errorMsg
-                                )
-                            }
-                        } catch (e: Exception) {
-                            XLog.e(e.message)
-                            callBack.onFailed(999, e.message ?: "失败")
-                        }
-                    }
-                } else {
-                    Http.handler.post {
-                        XLog.e(responseBody?.string())
-                        callBack.onFailed(response.code, responseBody?.string() ?: "失败")
-                    }
-                }
+            override fun onResponse(call: Call, response: Response) {
+                responseToUser(response, callBack)
             }
         })
     }
@@ -251,45 +128,44 @@ class OkHttpEngine : IHttpEngine {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Http.handler.post {
-                    XLog.e(e.toString())
-                    callBack.onFailed(999, e.message ?: "失败")
-                }
+                failureToUser(e, callBack)
             }
 
             @Throws(IOException::class)
-            override fun onResponse(
-                call: Call,
-                response: Response
-            ) {
-                val responseBody = response.body
-                if (response.isSuccessful && responseBody != null) {
-                    val result = responseBody.string()
-                    XLog.json(result)
-                    Http.handler.post {
-                        try {
-                            val jsonResult = JsonResult.newInstance(result)
-                            if (jsonResult.success) {
-                                callBack.onSuccess(jsonResult)
-                            } else {
-                                callBack.onFailed(
-                                    jsonResult.errorCode,
-                                    jsonResult.errorMsg
-                                )
-                            }
-                        } catch (e: Exception) {
-                            XLog.e(e.message)
-                            callBack.onFailed(999, e.message ?: "失败")
-                        }
-                    }
-                } else {
-                    Http.handler.post {
-                        XLog.e(responseBody?.string())
-                        callBack.onFailed(response.code, responseBody?.string() ?: "失败")
-                    }
-                }
+            override fun onResponse(call: Call, response: Response) {
+                responseToUser(response, callBack)
             }
         })
+    }
+
+    override fun uploadFile(
+        url: String,
+        fileName: String,
+        path: String,
+        file: File,
+        callBack: HttpCallBack<Any>
+    ) {
+        val requestBody: RequestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart(
+                "file", fileName, file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            )
+            .build()
+        val request = Request.Builder()
+            .url("$url?path=$path&fileName=$fileName")
+            .put(requestBody)
+            .build()
+        client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    failureToUser(e, callBack)
+                }
+
+                @Throws(IOException::class)
+                override fun onResponse(call: Call, response: Response) {
+                    responseToUser(response, callBack)
+                }
+            })
     }
 
     override fun delete(
@@ -314,43 +190,12 @@ class OkHttpEngine : IHttpEngine {
             .build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Http.handler.post {
-                    XLog.e(e.toString())
-                    callBack.onFailed(999, e.message ?: "失败")
-                }
+                failureToUser(e, callBack)
             }
 
             @Throws(IOException::class)
-            override fun onResponse(
-                call: Call,
-                response: Response
-            ) {
-                val responseBody = response.body
-                if (response.isSuccessful && responseBody != null) {
-                    val result = responseBody.string()
-                    XLog.json(result)
-                    Http.handler.post {
-                        try {
-                            val jsonResult = JsonResult.newInstance(result)
-                            if (jsonResult.success) {
-                                callBack.onSuccess(jsonResult)
-                            } else {
-                                callBack.onFailed(
-                                    jsonResult.errorCode,
-                                    jsonResult.errorMsg
-                                )
-                            }
-                        } catch (e: Exception) {
-                            XLog.e(e.message)
-                            callBack.onFailed(999, e.message ?: "失败")
-                        }
-                    }
-                } else {
-                    Http.handler.post {
-                        XLog.e(responseBody?.string())
-                        callBack.onFailed(response.code, responseBody?.string() ?: "失败")
-                    }
-                }
+            override fun onResponse(call: Call, response: Response) {
+                responseToUser(response, callBack)
             }
         })
     }
@@ -368,6 +213,44 @@ class OkHttpEngine : IHttpEngine {
         }
         val str = params.toString()
         return str.substring(0, str.length - 1)
+    }
+
+    private fun responseToUser(response: Response, callBack: HttpCallBack<Any>) {
+        val body = response.body
+        if (body != null) {
+            try {
+                val result = body.string()
+                XLog.json(result)
+                val jsonResult = JsonResult.newInstance(result)
+                val errorCode = jsonResult.errorCode
+                Http.handler.post {
+                    if (response.isSuccessful && jsonResult.success) {
+                        callBack.onSuccess(jsonResult)
+                    } else {
+//                        if (errorCode / 1000 == 2 || errorCode / 1000 == 3) {
+//                            XToast.error(jsonResult.errorMsg)
+//                        }
+                        callBack.onFailed(errorCode, jsonResult.errorMsg)
+                    }
+                }
+            } catch (e: Exception) {
+                XLog.e(e.message)
+                callBack.onFailed(999, e.message ?: "失败")
+            }
+        } else {
+            Http.handler.post {
+                XLog.e(response.message)
+                callBack.onFailed(response.code, response.message)
+            }
+        }
+    }
+
+
+    private fun failureToUser(e: IOException, callBack: HttpCallBack<Any>) {
+        Http.handler.post {
+            XLog.e(e.toString())
+            callBack.onFailed(999, e.message ?: "失败")
+        }
     }
 
     companion object {

@@ -1,7 +1,20 @@
 package com.example.hbhims.model.entity;
 
 
+import androidx.annotation.NonNull;
+
+import com.alibaba.fastjson.JSONObject;
+import com.example.hbhims.model.common.Constant;
+import com.example.hbhims.model.common.entity.JsonResult;
+import com.example.hbhims.model.common.util.http.Http;
+import com.example.hbhims.model.common.util.http.HttpCallBack;
+import com.example.hbhims.model.common.util.http.RequestCallBack;
+import com.youth.xframe.utils.XNetworkUtils;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * 用户表(SysUser)实体类
@@ -182,4 +195,74 @@ public class SysUser implements Serializable {
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
+
+    /**
+     * 根据id查询用户
+     *
+     * @param id              用户id
+     * @param requestCallBack 回调
+     */
+    public static void query(@NotNull Long id, @NotNull RequestCallBack<SysUser> requestCallBack) {
+        if (XNetworkUtils.isAvailable()) {
+            HashMap<String, Object> params = new HashMap<>(1);
+            params.put("id", id);
+            Http.obtain().get(Constant.USER_QUERY, params, new HttpCallBack<JsonResult<JSONObject>>() {
+
+                @Override
+                public void onSuccess(@NotNull JsonResult<JSONObject> jsonObjectJsonResult) {
+                    requestCallBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(SysUser.class));
+                }
+
+                @Override
+                public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                    requestCallBack.onFailed(errorCode, error);
+                }
+            });
+        } else {
+            requestCallBack.onNoNetWork();
+        }
+    }
+
+    public static void insert(@NotNull SysUser user, @NotNull RequestCallBack<SysUser> requestCallBack) {
+        if (XNetworkUtils.isAvailable()) {
+            Http.obtain().put(Constant.USER_REGISTER, user.toString(), new HttpCallBack<JsonResult<JSONObject>>() {
+                @Override
+                public void onSuccess(@NotNull JsonResult<JSONObject> jsonObjectJsonResult) {
+                    requestCallBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(SysUser.class));
+                }
+
+                @Override
+                public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                    requestCallBack.onFailed(errorCode, error);
+                }
+            });
+        } else {
+            requestCallBack.onNoNetWork();
+        }
+    }
+
+    public static void update(@NotNull SysUser user, @NotNull RequestCallBack<SysUser> requestCallBack) {
+        if (XNetworkUtils.isAvailable()) {
+            Http.obtain().post(Constant.USER_UPDATE, user.toString(), new HttpCallBack<JsonResult<JSONObject>>() {
+                @Override
+                public void onSuccess(@NotNull JsonResult<JSONObject> jsonObjectJsonResult) {
+                    requestCallBack.onSuccess(jsonObjectJsonResult.getData().toJavaObject(SysUser.class));
+                }
+
+                @Override
+                public void onFailed(@NotNull Integer errorCode, @NotNull String error) {
+                    requestCallBack.onFailed(errorCode, error);
+                }
+            });
+        } else {
+            requestCallBack.onNoNetWork();
+        }
+    }
+
 }

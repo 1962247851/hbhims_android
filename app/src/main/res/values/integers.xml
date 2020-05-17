@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="default_every_day_step_value">8000</integer>
+    <integer name="default_step_value">0</integer>
+    <integer name="default_height">150</integer>
+    <integer name="default_weight_number">100</integer>
+    <integer name="default_weight_decimal">0</integer>
+    <integer name="default_blood_sugar_number">10</integer>
+    <integer name="default_blood_sugar_decimal">0</integer>
+    <integer name="default_blood_oxygen">95</integer>
+</resources>

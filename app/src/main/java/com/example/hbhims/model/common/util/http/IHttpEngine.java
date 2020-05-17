@@ -3,6 +3,7 @@ package com.example.hbhims.model.common.util.http;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.Map;
 
 public interface IHttpEngine {
@@ -19,4 +20,5 @@ public interface IHttpEngine {
 
     void delete(@NotNull String url, @Nullable Map<String, Object> params, @NotNull HttpCallBack callBack);
 
+    void uploadFile(@NotNull String url, @NotNull String fileName, @NotNull String path, @NotNull File file, @NotNull HttpCallBack callBack);
 }

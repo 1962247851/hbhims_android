@@ -21,8 +21,13 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="MainTextAppearanceReverse" parent="@style/Base.TextAppearance.AppCompat">
+    <style name="SportActivityTextAppearance" parent="@style/Base.TextAppearance.AppCompat">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="MedicalSuggestionActivityTextAppearance" parent="@style/Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

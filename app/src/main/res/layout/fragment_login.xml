@@ -67,7 +67,7 @@
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tied_password"
+                    android:id="@+id/tiet_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
@@ -88,7 +88,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_password">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_code"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
@@ -98,7 +97,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tied_code"
+                        android:id="@+id/tiet_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/coe"
@@ -170,7 +169,6 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
-        android:id="@+id/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
