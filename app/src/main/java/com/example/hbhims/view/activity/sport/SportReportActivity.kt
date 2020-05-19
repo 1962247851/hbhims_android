@@ -15,6 +15,7 @@ import com.example.hbhims.model.entity.HealthSport
 import com.example.hbhims.view.base.ContainerActivity
 import com.example.hbhims.view.custom.LoadingDialog
 import com.example.hbhims.view.fragment.health.HealthFragment
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.youth.xframe.utils.XDateUtils
@@ -128,6 +129,12 @@ class SportReportActivity : ContainerActivity() {
         line_chart_latest_seven_days.axisLeft.textColor = getColor(android.R.color.white)
         line_chart_latest_seven_days.data.setValueTextColor(getColor(android.R.color.white))
         line_chart_latest_seven_days.setNoDataTextColor(getColor(android.R.color.white))
+        line_chart_latest_seven_days.axisLeft.addLimitLine(
+            LimitLine(standard.toFloat(), "每日目标").apply {
+                textColor = getColor(android.R.color.white)
+                lineColor = getColor(android.R.color.holo_orange_light)
+            }
+        )
 
         text_view_total_step_value.text = totalStepValue.toString()
         text_view_step_value_per_day.text = (totalStepValue / result.size).toString()
@@ -145,13 +152,23 @@ class SportReportActivity : ContainerActivity() {
         var countOfOver = 0
         if (resultAllUser.isNotEmpty()) {
             val groupBy = resultAllUser.groupBy { it.userId }
+            var needCountOne = false
             for (entry in groupBy) {
                 val otherUserMaxStepValue = entry.value.sortedByDescending { it.stepValue }[0]
-                if (otherUserMaxStepValue.userId != userId && highestStepValue > otherUserMaxStepValue.stepValue) {
-                    countOfOver++
+                if (otherUserMaxStepValue.userId != userId) {
+                    if (highestStepValue > otherUserMaxStepValue.stepValue) {
+                        countOfOver++
+                    }
+                } else {
+                    needCountOne = true
                 }
             }
-            defeatedPercentage = DecimalFormat("0.##").format(countOfOver * 100F / groupBy.size)
+            val total = if (needCountOne) {
+                groupBy.size - 1
+            } else {
+                groupBy.size
+            }
+            defeatedPercentage = DecimalFormat("0.##").format(countOfOver * 100F / total)
         }
         text_view_percentage_of_users_defeated.text = defeatedPercentage
     }
