@@ -71,15 +71,17 @@ class SleepStatisticActivity : ContainerActivity() {
         var lessDay = 0
         var overDay = 0
 
-        val endTimeMills = System.currentTimeMillis()
         val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, -1)
+        val endTimeMills = calendar.timeInMillis
         calendar.add(Calendar.DAY_OF_MONTH, -7)
         val startTimeMills = calendar.timeInMillis
         val entries = ArrayList<BarEntry>()
         val xValues = ArrayList<String>()
         val sleepList = ArrayList<HealthSleep>()
-        result.sortedBy { it.date }.forEachIndexed { index, healthSleep ->
-            val totalTime = healthSleep.totalTime
+        var indexTemp = 0
+        result.sortedBy { it.date }.forEach {
+            val totalTime = it.totalTime
             totalSleepTime += totalTime
             if (totalTime in 7 * 3600000..8 * 3600000) {
                 normalDay++
@@ -90,10 +92,10 @@ class SleepStatisticActivity : ContainerActivity() {
                     overDay++
                 }
             }
-            if (healthSleep.date in startTimeMills..endTimeMills) {
-                sleepList.add(healthSleep)
-                entries.add(BarEntry(index.toFloat(), totalTime.toFloat()))
-                xValues.add(XDateUtils.millis2String(healthSleep.date, "MM/dd"))
+            if (it.date in startTimeMills..endTimeMills) {
+                sleepList.add(it)
+                entries.add(BarEntry((indexTemp++).toFloat(), totalTime.toFloat()))
+                xValues.add(XDateUtils.millis2String(it.date, "MM/dd"))
             }
         }
         MPAChartUtil.updateBarChart(

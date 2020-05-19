@@ -126,7 +126,8 @@
                         android:id="@+id/image_view_code"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
-                        android:layout_marginStart="5dp" />
+                        android:layout_marginStart="5dp"
+                        tools:ignore="ContentDescription" />
 
                 </FrameLayout>
 
@@ -165,6 +166,7 @@
         android:background="?selectableItemBackground"
         android:text="@string/forget_password"
         android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
